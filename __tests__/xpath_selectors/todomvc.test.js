@@ -12,7 +12,7 @@ test("completing todo", async () => {
   
   await browser.all("//*[@id='todo-list']/*[contains(concat(' ', @class, ' '), ' completed ')]").should(have.exactTexts("b"))
   await browser.all("//*[@id='todo-list']/*[not(contains(concat(' ', @class, ' '), ' completed '))]").should(have.exactTexts("a", "c"))
-  await browser.all("//*[@id='todo-list']/*").should(have.exactTexts("a", "b", "c"))
+  await browser.all("//*[@id='todo-list']/li").should(have.exactTexts("a", "b", "c"))
 })
 
 afterAll(async () => {
