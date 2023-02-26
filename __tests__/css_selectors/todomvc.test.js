@@ -1,6 +1,6 @@
 import 'chromedriver'
 import { browser, have, perform } from 'selenidejs'
-import {test, afterAll} from '@jest/globals'
+import {test, afterEach} from '@jest/globals'
 
 test("completing todo", async () => {
   await browser.open("http://todomvc.com/examples/emberjs/")
@@ -15,6 +15,6 @@ test("completing todo", async () => {
   await browser.all("#todo-list>li").should(have.exactTexts("a", "b", "c"))
 })
 
-afterAll(async () => {
+afterEach(async () => {
     await browser.quit();
 })
