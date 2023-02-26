@@ -1,6 +1,7 @@
 import 'chromedriver'
 import { browser, have, perform } from 'selenidejs'
 import {test, afterAll} from '@jest/globals'
+import { todoMvc } from '../../lib/todomvc.js'
 
 test("completing todo", async () => {
   await browser.open("http://todomvc.com/examples/emberjs/")
@@ -8,10 +9,10 @@ test("completing todo", async () => {
   await browser.element("//*[@id='new-todo']").type("b").then(perform.pressEnter)
   await browser.element("//*[@id='new-todo']").type("c").then(perform.pressEnter)
   
-  await browser.element("//*[@id='todo-list']/li[.//text()='b']//*[contains(concat(' ', @class, ' '), ' toggle ')]").click()
+  await browser.element(todoMvc.checkItemXPathLocator).click()
   
-  await browser.all("//*[@id='todo-list']/li[contains(concat(' ', @class, ' '), ' completed ')]").should(have.exactTexts("b"))
-  await browser.all("//*[@id='todo-list']/li[not(contains(concat(' ', @class, ' '), ' completed '))]").should(have.exactTexts("a", "c"))
+  await browser.all(todoMvc.completedItemXPathLocator).should(have.exactTexts("b"))
+  await browser.all(todoMvc.unCompletedItemXPathLocator).should(have.exactTexts("a", "c"))
   await browser.all("//*[@id='todo-list']/li").should(have.exactTexts("a", "b", "c"))
 })
 
