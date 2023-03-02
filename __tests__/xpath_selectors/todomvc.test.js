@@ -1,8 +1,7 @@
 import 'chromedriver'
 import { browser, have, perform } from 'selenidejs'
 import {test, afterEach} from '@jest/globals'
-import { elemByText, elemContainClass, elemNotContainClass } from '../../lib/helpers.js'
-
+import { hasClassName, hasNotClassName } from '../../lib/xpath_helpers/todomvc.js'
 
 test("completing todo", async () => {
   
@@ -11,10 +10,10 @@ test("completing todo", async () => {
   await browser.element("//*[@id='new-todo']").type("b").then(perform.pressEnter)
   await browser.element("//*[@id='new-todo']").type("c").then(perform.pressEnter)
   
-  await browser.element(`//*[@id='todo-list']/${elemByText('li', 'b')}//${elemContainClass('*', 'toggle')}`).click()
+  await browser.element(`//*[@id='todo-list']/li[.//text()="b" ]//*[${hasClassName('toggle')}]`).click()
   
-  await browser.all(`//*[@id='todo-list']/${elemContainClass('li', 'completed')}`).should(have.exactTexts("b"))
-  await browser.all(`//*[@id='todo-list']/${elemNotContainClass('li', 'completed')}`).should(have.exactTexts("a", "c"))
+  await browser.all(`//*[@id='todo-list']/li[${hasClassName('completed')}]`).should(have.exactTexts("b"))
+  await browser.all(`//*[@id='todo-list']/li[${hasNotClassName('completed')}]`).should(have.exactTexts("a", "c"))
   await browser.all("//*[@id='todo-list']/li").should(have.exactTexts("a", "b", "c"))
 })
 
